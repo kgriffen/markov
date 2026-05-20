@@ -207,61 +207,68 @@
   // ── Data fetching ─────────────────────────────────────────────────────────
 
   async function fetchFromCache(ticker) {
-    // Relative path works on both GitHub Pages and local file server
     const resp = await fetch(`cache/${ticker}.json`, { cache: 'no-store' });
     if (!resp.ok) throw new Error(`cache miss (${resp.status})`);
     const data = await resp.json();
-    return { closes: data.closes, updated: data.updated, source: 'cache' };
+    return { closes: data.closes, updated: data.updated };
   }
 
-  async function fetchFromYahoo(ticker) {
+  // Fetch only the trading days AFTER afterDate — typically 1–3 rows.
+  async function fetchRecentFromYahoo(ticker, afterDate) {
     const yfUrl =
       `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}` +
-      `?range=10y&interval=1d&includePrePost=false`;
+      `?range=5d&interval=1d&includePrePost=false`;
     const proxies = [
       `https://api.allorigins.win/raw?url=${encodeURIComponent(yfUrl)}`,
       `https://corsproxy.io/?${encodeURIComponent(yfUrl)}`,
     ];
     for (const proxy of proxies) {
       try {
-        const resp = await fetch(proxy, { signal: AbortSignal.timeout(25000) });
+        const resp = await fetch(proxy, { signal: AbortSignal.timeout(12000) });
         if (!resp.ok) continue;
         const data = await resp.json();
         const result = data?.chart?.result?.[0];
         if (!result) continue;
-        const raw =
+        const timestamps = result.timestamp ?? [];
+        const rawCloses =
           result.indicators?.adjclose?.[0]?.adjclose ??
           result.indicators?.quote?.[0]?.close ?? [];
-        const closes = raw.filter(c => c != null && isFinite(c));
-        if (closes.length > 252) {
-          const today = new Date().toISOString().split('T')[0];
-          return { closes, updated: today, source: 'live' };
+
+        // Keep only rows strictly newer than the cache
+        const newCloses = [];
+        let lastDate = afterDate;
+        for (let i = 0; i < timestamps.length; i++) {
+          const date = new Date(timestamps[i] * 1000).toISOString().split('T')[0];
+          const c = rawCloses[i];
+          if (date > afterDate && c != null && isFinite(c)) {
+            newCloses.push(c);
+            lastDate = date;
+          }
         }
+        return { closes: newCloses, updated: lastDate };
       } catch (_) { /* try next proxy */ }
     }
     throw new Error('Yahoo unreachable');
   }
 
-  async function getCloses(ticker, forceYahoo) {
-    if (!forceYahoo) {
-      return await fetchFromCache(ticker);
-    }
-    // Live: try Yahoo, fall back to cache
-    try {
-      return await fetchFromYahoo(ticker);
-    } catch (_) {
-      try {
-        const cached = await fetchFromCache(ticker);
-        return { ...cached, source: 'cache-fallback' };
-      } catch (_2) {
-        throw new Error('data unavailable');
-      }
-    }
-  }
-
   async function analyze(ticker, forceYahoo) {
-    const { closes, updated, source } = await getCloses(ticker, forceYahoo);
-    return { ticker, updated, source, ...computeRegime(closes) };
+    // Always start from the full cached history
+    const cached = await fetchFromCache(ticker);
+
+    if (!forceYahoo) {
+      return { ticker, updated: cached.updated, source: 'cache', ...computeRegime(cached.closes) };
+    }
+
+    // Live: append only the days newer than the cache, then recompute
+    try {
+      const recent = await fetchRecentFromYahoo(ticker, cached.updated);
+      const allCloses = [...cached.closes, ...recent.closes];
+      const source = recent.closes.length > 0 ? 'live' : 'cache';
+      return { ticker, updated: recent.updated, source, ...computeRegime(allCloses) };
+    } catch (_) {
+      // Yahoo failed — use cache silently
+      return { ticker, updated: cached.updated, source: 'cache-fallback', ...computeRegime(cached.closes) };
+    }
   }
 
   // ── Rendering ─────────────────────────────────────────────────────────────
