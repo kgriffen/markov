@@ -1,0 +1,34 @@
+name: Update regime cache
+
+on:
+  schedule:
+    - cron: '30 13 * * 1-5'   # 6:30 AM Pacific (UTC-7 summer / UTC-8 winter ±1h)
+  workflow_dispatch:            # allows manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  update-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install --quiet yfinance pandas numpy
+
+      - name: Fetch and write cache
+        run: python fetch_cache.py
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add cache/
+          git diff --staged --quiet \
+            || git commit -m "chore: update regime cache $(date -u +%Y-%m-%d)"
+          git push

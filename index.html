@@ -25,161 +25,97 @@
       flex-wrap: wrap;
       gap: 12px;
     }
-    .header-left h1 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.02em;
+    .header-left h1 { font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+    .header-left .sub { font-size: 0.72rem; color: #555a7a; margin-top: 3px; }
+
+    .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    #timestamp { font-size: 0.72rem; color: #444a6a; }
+
+    .btn {
+      border: none; padding: 7px 15px; border-radius: 6px;
+      font-size: 0.8rem; font-weight: 600; cursor: pointer;
+      transition: background 0.15s; white-space: nowrap;
     }
-    .header-left .sub {
-      font-size: 0.72rem;
-      color: #555a7a;
-      margin-top: 3px;
-    }
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    #timestamp {
-      font-size: 0.72rem;
-      color: #444a6a;
-    }
-    #refresh-btn {
-      background: #2d4fd6;
-      color: #fff;
-      border: none;
-      padding: 7px 16px;
-      border-radius: 6px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s;
-      white-space: nowrap;
-    }
-    #refresh-btn:hover:not(:disabled) { background: #3d5fe6; }
-    #refresh-btn:disabled { background: #1e2140; color: #444; cursor: not-allowed; }
+    #cache-btn  { background: #1e2140; color: #8888cc; }
+    #cache-btn:hover:not(:disabled)  { background: #252850; }
+    #live-btn   { background: #2d4fd6; color: #fff; }
+    #live-btn:hover:not(:disabled)   { background: #3d5fe6; }
+    .btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
     /* ── Main ── */
     main { max-width: 960px; margin: 0 auto; padding: 28px 24px 48px; }
 
-    /* ── Status / loading ── */
-    #status {
-      text-align: center;
-      padding: 48px 0;
-      color: #555;
-      font-size: 0.88rem;
-    }
+    /* ── Status ── */
+    #status { text-align: center; padding: 48px 0; color: #555; font-size: 0.88rem; }
     .spinner {
-      display: inline-block;
-      width: 18px; height: 18px;
-      border: 2px solid #1e2140;
-      border-top-color: #2d4fd6;
-      border-radius: 50%;
-      animation: spin 0.65s linear infinite;
-      vertical-align: middle;
-      margin-right: 8px;
+      display: inline-block; width: 18px; height: 18px;
+      border: 2px solid #1e2140; border-top-color: #2d4fd6;
+      border-radius: 50%; animation: spin 0.65s linear infinite;
+      vertical-align: middle; margin-right: 8px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     #progress { font-size: 0.72rem; color: #444; margin-top: 6px; }
 
+    /* ── Source pill ── */
+    .source-pill {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
+      vertical-align: middle; margin-left: 6px;
+    }
+    .src-cache { background: #1e2140; color: #6666aa; }
+    .src-live  { background: #0d2b0d; color: #4caf50; }
+
     /* ── Summary chips ── */
-    .summary {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 22px;
-      flex-wrap: wrap;
-    }
+    .summary { display: flex; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
     .chip {
-      background: #12152a;
-      border: 1px solid #1e2140;
-      border-radius: 10px;
-      padding: 14px 22px;
-      flex: 1;
-      min-width: 90px;
+      background: #12152a; border: 1px solid #1e2140;
+      border-radius: 10px; padding: 14px 22px; flex: 1; min-width: 90px;
     }
-    .chip .n { font-size: 2rem; font-weight: 800; line-height: 1; }
+    .chip .n  { font-size: 2rem; font-weight: 800; line-height: 1; }
     .chip .lbl { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #555; margin-top: 4px; }
-    .n-bull { color: #4caf50; }
-    .n-side { color: #f9a825; }
-    .n-bear { color: #ef5350; }
+    .n-bull { color: #4caf50; } .n-side { color: #f9a825; } .n-bear { color: #ef5350; }
 
     /* ── Table ── */
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
     thead th {
-      text-align: left;
-      padding: 9px 14px;
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #44486a;
-      border-bottom: 1px solid #1e2140;
-      white-space: nowrap;
+      text-align: left; padding: 9px 14px;
+      font-size: 0.68rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #44486a;
+      border-bottom: 1px solid #1e2140; white-space: nowrap;
     }
     tbody tr { transition: background 0.1s; }
     tbody tr:hover { background: rgba(255,255,255,0.025); }
-    tbody td {
-      padding: 11px 14px;
-      border-bottom: 1px solid #111428;
-      white-space: nowrap;
-    }
+    tbody td { padding: 11px 14px; border-bottom: 1px solid #111428; white-space: nowrap; }
     tbody tr:last-child td { border-bottom: none; }
 
     .ticker { font-weight: 700; font-size: 0.92rem; color: #fff; }
-
     .badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 4px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
+      display: inline-block; padding: 3px 10px; border-radius: 4px;
+      font-size: 0.76rem; font-weight: 700; letter-spacing: 0.02em;
     }
-    .bull  { background: #0d2b0d; color: #4caf50; border: 1px solid #1a4a1a; }
-    .side  { background: #2b2200; color: #f9a825; border: 1px solid #4a3800; }
-    .bear  { background: #2b0d0d; color: #ef5350; border: 1px solid #4a1a1a; }
+    .bull { background: #0d2b0d; color: #4caf50; border: 1px solid #1a4a1a; }
+    .side { background: #2b2200; color: #f9a825; border: 1px solid #4a3800; }
+    .bear { background: #2b0d0d; color: #ef5350; border: 1px solid #4a1a1a; }
 
-    .pos { color: #4caf50; }
-    .neg { color: #ef5350; }
-    .neu { color: #666; }
+    .pos { color: #4caf50; } .neg { color: #ef5350; } .neu { color: #666; }
 
-    /* probability mini-bar */
-    .probs {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .bar {
-      display: flex;
-      width: 72px;
-      height: 5px;
-      border-radius: 3px;
-      overflow: hidden;
-      gap: 1px;
-    }
-    .b-bull { background: #4caf50; }
-    .b-side { background: #f9a825; }
-    .b-bear { background: #ef5350; }
+    .probs { display: flex; align-items: center; gap: 8px; }
+    .bar   { display: flex; width: 72px; height: 5px; border-radius: 3px; overflow: hidden; gap: 1px; }
+    .b-bull { background: #4caf50; } .b-side { background: #f9a825; } .b-bear { background: #ef5350; }
     .prob-txt { font-size: 0.72rem; color: #44486a; }
 
     .sig { font-weight: 700; font-family: 'SF Mono', Menlo, monospace; font-size: 0.83rem; }
-
-    /* ── Error row ── */
     .err-cell { color: #333a5a; font-size: 0.8rem; }
 
-    /* ── Footer ── */
     footer {
-      text-align: center;
-      padding: 20px 24px 32px;
-      color: #2a2e4a;
-      font-size: 0.7rem;
-      line-height: 1.9;
+      text-align: center; padding: 20px 24px 32px;
+      color: #2a2e4a; font-size: 0.7rem; line-height: 1.9;
     }
 
     @media (max-width: 540px) {
       header { padding: 16px; }
-      main { padding: 16px 12px 40px; }
+      main   { padding: 16px 12px 40px; }
       thead th, tbody td { padding: 9px 10px; }
     }
   </style>
@@ -193,13 +129,14 @@
   </div>
   <div class="header-right">
     <span id="timestamp"></span>
-    <button id="refresh-btn" onclick="run()" disabled>Loading…</button>
+    <button id="cache-btn" class="btn" onclick="run(false)" disabled>↺ Cache</button>
+    <button id="live-btn"  class="btn" onclick="run(true)"  disabled>⚡ Live Refresh</button>
   </div>
 </header>
 
 <main>
   <div id="status">
-    <span class="spinner"></span> Fetching data for 11 tickers…
+    <span class="spinner"></span> Loading from cache…
     <div id="progress"></div>
   </div>
   <div id="output" style="display:none;"></div>
@@ -208,16 +145,18 @@
 <footer>
   Observable Markov regime model &nbsp;·&nbsp; Framework: Roan (@RohOnChain) &nbsp;·&nbsp;
   Installed as a Claude Code skill by Lewis Jackson<br>
-  Backtests are historical, not forward-looking. Signal&nbsp;=&nbsp;P(Bull|current)&nbsp;−&nbsp;P(Bear|current).
+  Cache refreshed daily at 6:30 AM Pacific by GitHub Actions &nbsp;·&nbsp;
+  Signal&nbsp;=&nbsp;P(Bull|current)&nbsp;−&nbsp;P(Bear|current) &nbsp;·&nbsp;
+  Backtests are historical, not forward-looking.
 </footer>
 
 <script>
   const TICKERS   = ['SPY','QQQ','IWM','USO','UNG','FXE','FXI','IBIT','IYR','GLD','SLV'];
   const WINDOW    = 20;
   const THRESHOLD = 0.02;
-  const STATES    = ['Bear','Sideways','Bull'];  // index 0,1,2
+  const STATES    = ['Bear','Sideways','Bull'];
 
-  // ── Markov logic (mirrors the Python skill exactly) ──────────────────────
+  // ── Markov logic ─────────────────────────────────────────────────────────
 
   function labelRegimes(closes) {
     const out = [];
@@ -238,7 +177,6 @@
   }
 
   function stationaryDistribution(P) {
-    // Power iteration — converges to same result as eigendecomposition
     let v = [1/3, 1/3, 1/3];
     for (let it = 0; it < 1000; it++) {
       const vn = [0, 0, 0];
@@ -250,18 +188,40 @@
     return v;
   }
 
-  // ── Data fetching via CORS proxy → Yahoo Finance ─────────────────────────
+  function computeRegime(closes) {
+    const labels = labelRegimes(closes);
+    const P      = buildTransitionMatrix(labels);
+    const idx    = labels[labels.length - 1];
+    const roll   = (closes[closes.length - 1] - closes[closes.length - 1 - WINDOW])
+                 / closes[closes.length - 1 - WINDOW];
+    return {
+      regime:  STATES[idx],
+      roll,
+      pBull:   P[idx][2],
+      pSide:   P[idx][1],
+      pBear:   P[idx][0],
+      signal:  P[idx][2] - P[idx][0],
+    };
+  }
 
-  async function fetchCloses(ticker) {
+  // ── Data fetching ─────────────────────────────────────────────────────────
+
+  async function fetchFromCache(ticker) {
+    // Relative path works on both GitHub Pages and local file server
+    const resp = await fetch(`cache/${ticker}.json`, { cache: 'no-store' });
+    if (!resp.ok) throw new Error(`cache miss (${resp.status})`);
+    const data = await resp.json();
+    return { closes: data.closes, updated: data.updated, source: 'cache' };
+  }
+
+  async function fetchFromYahoo(ticker) {
     const yfUrl =
       `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}` +
       `?range=10y&interval=1d&includePrePost=false`;
-
     const proxies = [
       `https://api.allorigins.win/raw?url=${encodeURIComponent(yfUrl)}`,
       `https://corsproxy.io/?${encodeURIComponent(yfUrl)}`,
     ];
-
     for (const proxy of proxies) {
       try {
         const resp = await fetch(proxy, { signal: AbortSignal.timeout(25000) });
@@ -273,41 +233,53 @@
           result.indicators?.adjclose?.[0]?.adjclose ??
           result.indicators?.quote?.[0]?.close ?? [];
         const closes = raw.filter(c => c != null && isFinite(c));
-        if (closes.length > 252) return closes;
+        if (closes.length > 252) {
+          const today = new Date().toISOString().split('T')[0];
+          return { closes, updated: today, source: 'live' };
+        }
       } catch (_) { /* try next proxy */ }
     }
-    throw new Error('data unavailable');
+    throw new Error('Yahoo unreachable');
   }
 
-  async function analyze(ticker) {
-    const closes = await fetchCloses(ticker);
-    const labels = labelRegimes(closes);
-    const P      = buildTransitionMatrix(labels);
-    const idx    = labels[labels.length - 1];
-    const roll   = (closes[closes.length - 1] - closes[closes.length - 1 - WINDOW])
-                 / closes[closes.length - 1 - WINDOW];
-    return {
-      ticker,
-      regime:  STATES[idx],
-      roll,
-      pBull:   P[idx][2],
-      pSide:   P[idx][1],
-      pBear:   P[idx][0],
-      signal:  P[idx][2] - P[idx][0],
-      stationary: stationaryDistribution(P),
-    };
+  async function getCloses(ticker, forceYahoo) {
+    if (!forceYahoo) {
+      return await fetchFromCache(ticker);
+    }
+    // Live: try Yahoo, fall back to cache
+    try {
+      return await fetchFromYahoo(ticker);
+    } catch (_) {
+      try {
+        const cached = await fetchFromCache(ticker);
+        return { ...cached, source: 'cache-fallback' };
+      } catch (_2) {
+        throw new Error('data unavailable');
+      }
+    }
+  }
+
+  async function analyze(ticker, forceYahoo) {
+    const { closes, updated, source } = await getCloses(ticker, forceYahoo);
+    return { ticker, updated, source, ...computeRegime(closes) };
   }
 
   // ── Rendering ─────────────────────────────────────────────────────────────
 
   function pct(v, d=1) { return (v * 100).toFixed(d) + '%'; }
-  function sign(v)      { return v >= 0 ? '+' : ''; }
+  function sgn(v)       { return v >= 0 ? '+' : ''; }
 
-  function regimeClass(r) {
+  function regimeCls(r) {
     return r === 'Bull' ? 'bull' : r === 'Bear' ? 'bear' : 'side';
   }
 
-  function renderOutput(results) {
+  function sourcePill(source) {
+    if (source === 'live')           return '<span class="source-pill src-live">LIVE</span>';
+    if (source === 'cache-fallback') return '<span class="source-pill src-cache">CACHED</span>';
+    return '';
+  }
+
+  function renderOutput(results, forceYahoo) {
     const ok   = results.filter(r => !r.error);
     const bull = ok.filter(r => r.regime === 'Bull').length;
     const side = ok.filter(r => r.regime === 'Sideways').length;
@@ -320,18 +292,19 @@
           <td colspan="5" class="err-cell">⚠ ${r.error}</td>
         </tr>`;
 
-      const rClass = regimeClass(r.regime);
-      const sigColor = r.signal > 0.05 ? 'pos' : r.signal < -0.05 ? 'neg' : 'neu';
-
       const bW = Math.round(r.pBull * 70);
       const sW = Math.round(r.pSide * 70);
       const eW = 70 - bW - sW;
+      const sigCls = r.signal > 0.05 ? 'pos' : r.signal < -0.05 ? 'neg' : 'neu';
 
       return `
         <tr>
           <td class="ticker">${r.ticker}</td>
-          <td><span class="badge ${rClass}">${r.regime}</span></td>
-          <td class="${r.roll >= 0 ? 'pos' : 'neg'}">${sign(r.roll)}${pct(r.roll, 2)}</td>
+          <td>
+            <span class="badge ${regimeCls(r.regime)}">${r.regime}</span>
+            ${forceYahoo ? sourcePill(r.source) : ''}
+          </td>
+          <td class="${r.roll >= 0 ? 'pos' : 'neg'}">${sgn(r.roll)}${pct(r.roll, 2)}</td>
           <td>
             <div class="probs">
               <div class="bar">
@@ -342,7 +315,7 @@
               <span class="prob-txt">${pct(r.pBull,0)}&thinsp;/&thinsp;${pct(r.pSide,0)}&thinsp;/&thinsp;${pct(r.pBear,0)}</span>
             </div>
           </td>
-          <td><span class="sig ${sigColor}">${sign(r.signal)}${r.signal.toFixed(2)}</span></td>
+          <td><span class="sig ${sigCls}">${sgn(r.signal)}${r.signal.toFixed(2)}</span></td>
         </tr>`;
     }).join('');
 
@@ -372,21 +345,20 @@
 
   let busy = false;
 
-  async function run() {
+  async function run(forceYahoo = false) {
     if (busy) return;
     busy = true;
 
-    const btn    = document.getElementById('refresh-btn');
-    const status = document.getElementById('status');
-    const output = document.getElementById('output');
-    const prog   = document.getElementById('progress');
+    const cacheBtn = document.getElementById('cache-btn');
+    const liveBtn  = document.getElementById('live-btn');
+    const status   = document.getElementById('status');
+    const output   = document.getElementById('output');
 
-    btn.disabled    = true;
-    btn.textContent = 'Loading…';
+    cacheBtn.disabled = liveBtn.disabled = true;
     status.style.display = 'block';
     output.style.display = 'none';
     status.innerHTML =
-      `<span class="spinner"></span> Fetching data for ${TICKERS.length} tickers…` +
+      `<span class="spinner"></span> ${forceYahoo ? 'Fetching live data…' : 'Loading from cache…'}` +
       `<div id="progress"></div>`;
 
     const results = [];
@@ -394,29 +366,28 @@
       document.getElementById('progress').textContent =
         `${ticker}  (${results.length + 1} / ${TICKERS.length})`;
       try {
-        results.push(await analyze(ticker));
+        results.push(await analyze(ticker, forceYahoo));
       } catch (e) {
         results.push({ ticker, error: e.message });
       }
     }
 
-    output.innerHTML       = renderOutput(results);
-    status.style.display   = 'none';
-    output.style.display   = 'block';
+    output.innerHTML     = renderOutput(results, forceYahoo);
+    status.style.display = 'none';
+    output.style.display = 'block';
 
-    const now = new Date().toLocaleString('en-US', {
-      timeZone: 'America/Los_Angeles',
-      month: 'short', day: 'numeric',
-      hour: '2-digit', minute: '2-digit',
-      timeZoneName: 'short',
-    });
-    document.getElementById('timestamp').textContent = `Updated ${now}`;
-    btn.disabled    = false;
-    btn.textContent = 'Refresh';
+    // Timestamp: prefer the most recent "updated" date from results
+    const dates   = results.filter(r => r.updated).map(r => r.updated).sort();
+    const asOf    = dates[dates.length - 1] ?? '—';
+    const liveTag = forceYahoo ? ' · live' : ' · cached';
+    document.getElementById('timestamp').textContent = `Data: ${asOf}${liveTag}`;
+
+    cacheBtn.disabled = liveBtn.disabled = false;
     busy = false;
   }
 
-  run();
+  // Auto-run from cache on load
+  run(false);
 </script>
 </body>
 </html>
